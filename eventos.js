@@ -1,11 +1,11 @@
 "use strict"
 const hamburguesas=document.querySelectorAll("img.lista");
 const botones=document.querySelectorAll("button");
-const cuadro_modal=document.querySelectorAll(".cuadro");
-const salir_modal=document.querySelectorAll(".cuadro [type=button]");
-const info=document.querySelectorAll(".info");
+const cuadro_modal=document.querySelector(".cuadro");
+const salir_modal=document.querySelector(".cuadro [type=button]");
+const info=document.querySelector(".info");
 
-let c=0;
+const contador=[];
 
 botones.forEach(
     (boton)=>{
@@ -16,22 +16,22 @@ botones.forEach(
                 if(boton.classList.contains("off")){
                     boton.classList.remove("off");
                     boton.classList.add("on");
-                    c++;
+                    contador.push('filtro')
                 }else if(boton.classList.contains("on")){
                     boton.classList.remove("on");
                     boton.classList.add("off");
-                    c--;
+                    contador.pop();
                 }         
 
                 hamburguesas.forEach(
                     (hamburguesa)=>{
                         //SI NO HAY NINGUNO SELECCIONADO MUESTRO TODOS
-                        if(c===0){
+                        if(contador.length===0){
                             hamburguesa.classList.remove("ocultar");
                         }
 
                         //SI HAY UN FILTRO ACTIVO (QUIERE DECIR QUE SI NO HAY NINGUNO ENTRARÍA ARRIBA) 
-                        else if(c===1){
+                        else if(contador.length===1){
 
                             //SI EL BOTON ESTÁ EN ON
                             if(boton.classList.contains("on")){
@@ -68,7 +68,17 @@ botones.forEach(
 
 const mostrarDatos=(index)=>{
     return()=>{
-        cuadro_modal[index].classList.add("ver");
+        const fecha=datos[index]['fecha de creacion'].split("-");
+        cuadro_modal.classList.add("ver");
+        info.children[0].src=datos[index]['imagen'];   
+        info.children[1].innerText=datos[index]['nombre'];  
+        info.children[2].innerText=datos[index]['precio']+"€";  
+        info.children[3].innerText=datos[index]['ingredientes'];
+        info.children[4].innerText=datos[index]['peso']+"g";  
+        info.children[5].innerText=datos[index]['tipo de carne'];   
+        info.children[6].innerText=datos[index]['lechuga'];  
+        info.children[7].innerText=fecha[2]+'-'+fecha[1]+'-'+fecha[0];
+        info.children[8].href=datos[index]['pagina del producto'];  
     }
 }
 
@@ -76,20 +86,19 @@ hamburguesas.forEach(
     (imagen,indice)=>{
         imagen.addEventListener("click", mostrarDatos(indice));
 
-        salir_modal[indice].addEventListener("click",
+        salir_modal.addEventListener("click",
         ()=>{
-            cuadro_modal[indice].classList.remove("ver");
+            cuadro_modal.classList.remove("ver");
         });
 
-        cuadro_modal[indice].addEventListener("click",
+        cuadro_modal.addEventListener("click",
         ()=>{
-            cuadro_modal[indice].classList.remove("ver");
+            cuadro_modal.classList.remove("ver");
         });
 
-        info[indice].addEventListener("click",
+        info.addEventListener("click",
         (evento)=>{
             evento.stopPropagation();
         });
     }
 );
-

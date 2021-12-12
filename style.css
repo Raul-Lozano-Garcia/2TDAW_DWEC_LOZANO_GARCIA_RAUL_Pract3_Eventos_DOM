@@ -112,3 +112,11 @@ button{
 .ver{
     display: flex;
 }
+
+.nover{
+    display: none;
+}
+
+.mostrar{
+    display: inline-block;
+}
